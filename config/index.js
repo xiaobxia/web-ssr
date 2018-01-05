@@ -37,13 +37,7 @@ module.exports = {
     assetsSubDirectory: '/static',
     server: {
       port: 4000,
-      viewPath: './dist/',
-      proxy: [
-        {
-          target: '/user',
-          path: 'http://192.168.2.243:8080/user'
-        }
-      ]
+      baseDir: './dist/'
     },
   },
   prod: {
@@ -51,13 +45,7 @@ module.exports = {
     assetsPublicPath: '',
     server: {
       port: 4000,
-      viewPath: './dist/',
-      proxy: [
-        {
-          target: '/user',
-          path: 'http://192.168.2.243:8080/user'
-        }
-      ]
+      baseDir: './dist/'
     }
   }
 };
