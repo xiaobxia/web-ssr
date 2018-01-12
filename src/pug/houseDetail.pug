@@ -1,0 +1,121 @@
+include components/carousel
+include components/scroll
+
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    title 房源
+    meta(name="viewport", content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0")
+    link(rel="stylesheet", type="text/css", href="/static/lib/mui.min.css")
+    link(rel="stylesheet", type="text/css", href="/static/css/houseDetail.css")
+    script(type="text/javascript", src="http://api.map.baidu.com/api?v=2.0&ak=2mVgyhihCUsCif6bDgC7V1GK4chYQUfN")
+    script(type="text/javascript", src="/static/lib/mui.js")
+    script(type="text/javascript", src="/static/lib/util.js")
+    script(type="text/javascript").
+      setAdaptive();
+  body
+    +carousel('slider', 'slider-number-index', img, '/static/asset/default-house-img.jpg')
+    .content-wrap.houseMainInfo-wrap
+      h2=title
+      .divider-horizontal
+      .base-info
+        .item-wrap
+          .item-title=houseType === '1' ? '售价' : '租金'
+          .item-value=price
+        .item-wrap
+          .item-title 房型
+          .item-value=room + hall
+        .item-wrap
+          .item-title 建筑面积
+          .item-value=buildarea
+      .divider-horizontal
+      .detail-info
+        .item-wrap
+          .item-title 单价：
+          .item-value=houseType === '1' ? avgprice : price
+        .item-wrap
+          .item-title 挂牌：
+          .item-value=createtime
+        .item-wrap
+          .item-title 朝向：
+          .item-value=forward
+        .item-wrap
+          .item-title 装修：
+          .item-value=fitment
+        .item-wrap
+          .item-title 类型：
+          .item-value=sell_type
+        .item-wrap
+          .item-title 年代：
+          .item-value=buildyear
+        .item-wrap.no-bottom(style="width: 100%")
+          .item-title 小区：
+          .item-value
+            span.community-icon
+            a(class='green-text link-a' href='/communityDetail?blockId=' + block_id + '&houseType=' + houseType + '&userType=' + userType + '&userId=' + userId + '&city=' + city)=block_name
+    #house-baidu-map
+    if userType == 'customer'
+      .content-wrap.tab-wrap
+        h2 同小区房源
+        #segmentedControl.mui-segmented-control
+          a.mui-control-item.mui-active(href="#sale") 在售
+          if houseInBlock.rent.lists.length != 0
+            a(class="mui-control-item" href="#rent") 在租
+          else
+            a(class="mui-control-item-no" href="#rent") 在租
+      .content-wrap-left
+        #sale.mui-control-content.mui-active
+          +scroll(houseInBlock.sell.lists, "/static/asset/default-house-img.jpg", userType, '1')
+          .more-btn='同小区在售' + houseInBlock.sell.tatalCount + '套'
+        #rent.mui-control-content
+          +scroll(houseInBlock.rent.lists, "/static/asset/default-house-img.jpg", userType, '2')
+          .more-btn='同小区在租' + houseInBlock.rent.tatalCount + '套'
+      if communityAround.length != 0
+        .content-wrap.tab-wrap
+          h2.content-title 周边小区
+        .content-wrap-left
+          +scroll(communityAround, "/static/asset/default-house-img.jpg", userType, houseType)
+      if userId != ''
+        div(style={height: '17rem'})
+        if houseType == '1'
+          div(class="bottom-bar sell")
+            div(class="btn-wrap")
+              div(class="compare-btn" id="compare-btn")
+                div(class="icon")
+                  div(class="compare-icon")
+                div(class="text") 加入对比
+              div(class="like-btn" id="like-btn")
+                div(class="icon")
+                  if attentionState == '0'
+                    div(class="like-icon" id="like-icon")
+                  else
+                    div(class="like-icon active" id="like-icon")
+                div(class="text") 关注
+            div(class="contact-btn")
+              a(href="tel:" + brokerPhone) 预约看房
+        else
+          div(class="bottom-bar rent")
+            div(class="btn-wrap")
+              div(class="like-btn" id="like-btn")
+                div(class="icon")
+                  if attentionState == '0'
+                    div(class="like-icon" id="like-icon")
+                  else
+                    div(class="like-icon active" id="like-icon")
+                div(class="text") 关注
+            div(class="contact-btn")
+              a(href="tel:"+brokerPhone) 预约看房
+      else
+        div(style={height: '5rem'})
+    else
+      div(style={height: '5rem'})
+    script(type="text/javascript").
+      var attentionState = "#{attentionState}";
+      var b_map_x = #{communityLocation.b_map_x};
+      var b_map_y = #{communityLocation.b_map_y};
+      var disrictName = "#{disrictName}";
+      var streetName = "#{streetName}";
+      var userId = '#{userId}';
+      var businessNum = '#{id}';
+    script(type="text/javascript", src="/static/js/houseDetail.js")

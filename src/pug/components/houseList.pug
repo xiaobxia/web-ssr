@@ -1,0 +1,22 @@
+mixin houseList(houseList, defaultImg, userType, houseType)
+  .house-list-wrap
+    each houseInfo in houseList
+      .house-item-wrap
+        a(class="block-like link-a" href='/house/getHouseDetail?houseId=' + houseInfo.id + '&userType=' + userType + '&houseType=' + houseType)
+        div
+          .pic-wrap
+            if houseInfo.pic != ''
+              img(src=houseInfo.pic)
+            else
+              img(src=defaultImg)
+          .info-wrap
+            h3=houseInfo.block_name
+            if houseType == '1'
+              p.sub-title=houseInfo.buildarea + '/朝' + houseInfo.forward + '/' + houseInfo.floor_type + '共' + houseInfo.totalfloor
+            else
+              p.sub-title=houseInfo.buildarea + '/朝' + houseInfo.forward + '/' + houseInfo.room + houseInfo.hall
+            p
+              span.red-text=houseInfo.price
+              if houseType == '1'
+                span.grey-text=houseInfo.avgprice
+        .create-time-wrap=houseInfo.publishTime

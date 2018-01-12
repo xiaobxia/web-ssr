@@ -1,7 +1,6 @@
 {
   "watch": [
-    "server.js",
-    "routes.js",
+    "./app",
     "./config",
     "createData.js"
   ]

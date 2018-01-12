@@ -1,0 +1,19 @@
+mixin carousel(id, numberId, imgs, defaultImg)
+  div(id=id).mui-slider
+    .mui-slider-group
+      if imgs.length != 0
+        each val in imgs
+          .mui-slider-item
+            a(href="#")
+              img(src=val  data-preview-src="" data-preview-group="1")
+      else
+        .mui-slider-item
+          a(href="#")
+            img(src=defaultImg  data-preview-src="" data-preview-group="1")
+  .slider-number-indicator
+    span(id=numberId) 1
+    span.divider /
+    if imgs.length == 0
+      span 1
+    else
+      span=imgs.length

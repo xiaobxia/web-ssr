@@ -1,0 +1,73 @@
+include components/carousel
+include components/houseList
+include components/scroll
+
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    title 小区展示
+    meta(name="viewport", content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0")
+    link(rel="stylesheet", type="text/css", href="/static/lib/mui.min.css")
+    link(rel="stylesheet", type="text/css", href="/static/css/communityDetail.css")
+    script(type="text/javascript", src="http://api.map.baidu.com/api?v=2.0&ak=2mVgyhihCUsCif6bDgC7V1GK4chYQUfN")
+    script(type="text/javascript", src="/static/lib/mui.js")
+    script(type="text/javascript", src="/static/lib/util.js")
+    script(type="text/javascript").
+      setAdaptive();
+  body
+    +carousel('slider', 'slider-number-index', img, '/static/asset/default-community-img.jpg')
+    .like-wrap
+      h4=cmt_name
+      span.grey-text=address
+      #like-btn
+        if attentionState == '0'
+          span(class="like-icon" id="like-icon")
+        else
+          span(class="like-icon active" id="like-icon")
+        | 关注
+    .divider-horizontal-block
+    .community-info-wrap
+      h2 小区简介
+      .divider-horizontal
+      .item-wrap
+        span.item-title 年代：
+        span.item-value=build_date + '年'
+      .item-wrap
+        span.item-title 位置：
+        span.item-value=disrictName + streetName
+      .item-wrap
+        span.item-title 栋数：
+        span.item-value=build_num + '栋'
+    #house-baidu-map
+    .content-wrap.tab-wrap
+      h2 同小区房源
+      #segmentedControl.mui-segmented-control
+        a.mui-control-item.mui-active(href="#sale") 在售
+        if houseInblock.rent.lists.length != 0
+          a(class="mui-control-item" href="#rent") 在租
+        else
+          a(class="mui-control-item-no" href="#rent") 在租
+    .content-wrap-h
+      #sale.mui-control-content.mui-active
+        +houseList(houseInblock.sell.lists, '/static/asset/default-house-img.jpg', userType, '1')
+        .more-btn 查看更多
+      #rent.mui-control-content
+        +houseList(houseInblock.rent.lists, '/static/asset/default-house-img.jpg', userType, '2')
+        .more-btn 查看更多
+    if communityAround.length != 0
+      .content-wrap.tab-wrap
+        h2.content-title 周边小区
+      .content-wrap-left
+        +scroll(communityAround, "/static/asset/default-house-img.jpg" , userType, houseType)
+    div(style="height: 5rem")
+    div(style={display: 'none'})
+    script(type="text/javascript").
+      var attentionState = "#{attentionState}";
+      var b_map_x = #{b_map_x};
+      var b_map_y = #{b_map_y};
+      var disrictName = "#{disrictName}";
+      var streetName = "#{streetName}";
+      var userId = '#{userId}';
+      var businessNum = '#{id}';
+    script(type="text/javascript", src="/static/js/communityDetail.js")

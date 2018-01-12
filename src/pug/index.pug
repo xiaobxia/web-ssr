@@ -1,13 +1,22 @@
 doctype html
 html(lang="en")
   head
-    title= pageTitle
-    link(rel="stylesheet" type="text/css" href="/static/css/index.css")
+    title 主页
+    style.
+      .block-item {
+        margin: 0 50px;
+      }
+
+      .block-item a {
+        display: block;
+        padding: 25px 50px;
+        color: #fff;
+        background-color: #555;
+      }
   body
-    h1 Pug - node template engine
-    #container.col
-      p.
-        9Pug is a terse and simple templating language with a
-        strong focus on performance and powerful features.
-    script(type="text/javascript" src="/static/js/index.js")
+    div.block-item
+      a(href="/houseDetail") houseDetail
+    div.block-item
+      a(href="/communityDetail") communityDetail
+
 

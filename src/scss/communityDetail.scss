@@ -1,0 +1,325 @@
+@import "var/var";
+@import "./var/core";
+@import "./var/slider";
+
+.like-wrap {
+  position: relative;
+  margin: 0 32px;
+  height: 82px;
+  line-height: 82px;
+  font-size: 26px;
+  color: $grey-text-color;
+  h4 {
+    margin-right: 1em;
+    display: inline;
+    color: #000;
+    font-size: 30px;
+    font-weight: 500;
+  }
+  #like-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    font-size: 26px;
+    color: $grey-text-color;
+    .like-icon {
+      width: 1.5em;
+      height: 1.5em;
+      vertical-align: middle;
+      margin-right: .5em;
+      cursor: pointer;
+    }
+  }
+}
+
+.divider-horizontal-block {
+  height: 20px;
+  width: 100%;
+  background-color: #f5f5f5;
+}
+
+.community-info-wrap {
+  margin: 28px 32px;
+  h2 {
+    margin: 0 0 28px 0;
+    font-size: 36px;
+    color: #000;
+    font-weight: 500;
+  }
+  .item-wrap {
+    margin: 30px 0;
+    font-size: 30px;
+    color: $grey-text-color;
+    &:last-child {
+      margin: 0;
+    }
+    .item-title {
+      font-size: 30px;
+      color: $grey-text-color;
+    }
+    .item-value {
+      font-size: 30px;
+      color: #000;
+    }
+  }
+}
+
+.house-list-wrap {
+  .house-item-wrap {
+    height: 260px;
+    padding: 36px 0 0 0;
+    border-bottom: 1px solid $grey;
+    &:last-child {
+      border-bottom: none;
+    }
+    .pic-wrap {
+      display: inline-block;
+      margin-right: 40px;
+      width: 210px;
+      height: 160px;
+      overflow: hidden;
+      background-color: $img-color;
+      img {
+        width: 100%;
+        height: auto;
+        min-height: 176px;
+      }
+    }
+    .info-wrap {
+      display: inline-block;
+      width: (750-210-64) px;
+      h3 {
+        font-size: 32px;
+        font-weight: 500;
+      }
+      .sub-title {
+        margin: 26px 0 32px 0;
+      }
+      p {
+        margin: 0;
+        color: #394043;
+        font-size: 26px;
+        .red-text {
+          font-size: 32px;
+          margin-right: 40px;
+        }
+      }
+    }
+    .create-time-wrap {
+      margin: 20px 0;
+      font-size: 22px;
+      color: $grey-text-color;
+    }
+  }
+}
+
+.line-item {
+  display: inline-block;
+}
+
+.mui-scroll-wrapper {
+  position: relative;
+  height: $card-height;
+  .mui-scroll {
+    height: 100%;
+  }
+  .line-item {
+    margin: 0 46px 0 0;
+    height: $card-height;
+    width: 230px;
+    border: none;
+    box-shadow: none;
+    border-radius: 0;
+    overflow: hidden;
+    &:last-child {
+      margin: 0;
+    }
+  }
+  .pic-wrap {
+    width: 230px;
+    height: 176px;
+    background-color: $img-color;
+    overflow: hidden;
+    img {
+      width: 100%;
+      height: auto;
+      min-height: 176px;
+    }
+  }
+  h4 {
+    margin: 16px 0;
+    font-size: 24px;
+    font-weight: 500;
+  }
+  .text-wrap {
+    margin: 20px 0;
+    font-size: 24px;
+    font-weight: 500;
+    .grey-text {
+      float: right;
+    }
+  }
+}
+
+.houseMainInfo-wrap {
+  h2 {
+    margin: 0 0 46px 0;
+    font-size: 46px;
+    color: #000;
+    font-weight: 500;
+  }
+  .base-info {
+    margin: 46px 0;
+    .item-wrap {
+      display: inline-block;
+      width: (0.96/3)*100%;
+      text-align: center;
+      border-right: 1px solid $grey;
+      &:last-child {
+        border: none;
+      }
+      .item-title {
+        margin-bottom: 20px;
+        font-size: 26px;
+        color: $grey-text-color;
+      }
+      .item-value {
+        font-size: 32px;
+        color: $red-text-color;
+      }
+    }
+  }
+  .detail-info {
+    margin: 46px 0 0 0;
+    .item-wrap {
+      display: inline-block;
+      margin-bottom: 32px;
+      width: 49%;
+      font-size: 30px;
+      color: $grey-text-color;
+      &:last-child {
+        margin: 0;
+      }
+      .item-title {
+        display: inline;
+        font-size: 30px;
+        color: $grey-text-color;
+      }
+      .item-value {
+        display: inline;
+        font-size: 30px;
+        color: #000;
+      }
+    }
+  }
+}
+
+.like-icon {
+  display: inline-block;
+  width: 1.2em;
+  height: 1.2em;
+  margin-right: 0.2em;
+  vertical-align: bottom;
+}
+
+.like-icon {
+  background: #fff none no-repeat center center;
+  background-size: contain;
+  background-image: url("../asset/like-icon-2x.png");
+  &.active{
+    background-image: url("../asset/like-icon-active-2x.png");
+  }
+}
+
+[data-dpr="3"] {
+  .like-icon {
+    background: #fff none no-repeat center center;
+    background-size: contain;
+    background-image: url("../asset/like-icon-3x.png");
+    &.active{
+      background-image: url("../asset/like-icon-active-3x.png");
+    }
+  }
+}
+
+#house-baidu-map {
+  width: 100%;
+  height: 422px;
+  background-color: #eee;
+}
+
+.content-title {
+  margin: 0;
+  font-size: 36px;
+  color: #000;
+  font-weight: 500;
+}
+
+.tab-wrap {
+  position: relative;
+  margin-bottom: 12px;
+  h2 {
+    margin: 0;
+    font-size: 36px;
+    color: #000;
+    font-weight: 500;
+  }
+  .mui-segmented-control {
+    display: block;
+    position: absolute;
+    top: -20px;
+    right: 0;
+    width: auto;
+    font-size: 28px;
+    color: $grey-text-color;
+    border: none;
+    .mui-control-item-no {
+      line-height: 38PX;
+      display: table-cell;
+      overflow: hidden;
+      width: 1%;
+      -webkit-transition: background-color .1s linear;
+      transition: background-color .1s linear;
+      text-align: center;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      color: #007aff;
+      border-color: #007aff;
+      border-left: 1px solid #007aff;
+    }
+    .mui-control-item-no, .mui-control-item {
+      display: inline-block;
+      padding: 20px 10px;
+      margin-right: 0.5em;
+      width: auto;
+      background-color: #fff;
+      border: none;
+      color: $grey-text-color;
+      font-size: 28px;
+      cursor: pointer;
+    }
+    a{
+      &:last-child {
+        margin: 0;
+      }
+    }
+    .mui-control-item {
+      &.mui-active {
+        color: $green-text-color;
+      }
+    }
+  }
+}
+
+.more-btn {
+  margin: 30px 0;
+  width: 686px;
+  height: 76px;
+  line-height: 76px;
+  background-color: #f5f5f5;
+  text-align: center;
+  font-size: 26px;
+  color: $grey-text-color;
+  cursor: pointer;
+}

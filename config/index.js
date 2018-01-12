@@ -2,7 +2,14 @@
  * Created by xiaobxia on 2017/9/17.
  */
 const path = require('path');
+
+const root = path.resolve(__dirname, '../');
+function resolveRoot(dir) {
+  return path.resolve(root, dir);
+}
+
 module.exports = {
+  root: root,
   base: {
     path: {
       dist: './dist',
@@ -14,7 +21,7 @@ module.exports = {
       libWatch: './src/lib/*',
       asset: './src/asset/*',
       assetWatch: './src/asset/*',
-      pug: './src/pug/*'
+      pug: './src/pug/**'
     },
     pxtorem: {
       rootValue: 10,
@@ -37,15 +44,28 @@ module.exports = {
     assetsSubDirectory: '/static',
     server: {
       port: 4000,
-      baseDir: './dist/'
+      baseDir: resolveRoot('dist'),
+      proxyTable: {
+        "/user": {
+          "target": "http://192.168.2.50:8080/"
+        }
+      }
     },
+    phpAddress: 'http://apidev.cd121.com/index',
   },
   prod: {
     assetsSubDirectory: '/static',
     assetsPublicPath: '',
     server: {
       port: 4000,
-      baseDir: './dist/'
-    }
+      baseDir: resolveRoot('dist')
+    },
+    phpAddress: 'http://apidev.cd121.com/index'
+  },
+  logger: {
+    dir: resolveRoot('logs'),
+    fileName: 'cheese.log',
+    debugLogLevel: 'ALL',
+    productLogLevel: 'ERROR'
   }
 };
