@@ -45,7 +45,7 @@ function logData(fileData) {
   }
 }
 
-module.exports = async function (req, method, apiUrl, apiQuery) {
+module.exports = async function (method, apiUrl, apiQuery) {
   const cacheKey = apiUrl + JSON.stringify(apiQuery);
   let data = null;
   const s = Date.now();
