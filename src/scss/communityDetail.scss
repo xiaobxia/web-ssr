@@ -127,7 +127,7 @@
   .line-item {
     margin: 0 46px 0 0;
     height: $card-height;
-    width: 230px;
+    width: $card-width;
     border: none;
     box-shadow: none;
     border-radius: 0;
@@ -137,14 +137,14 @@
     }
   }
   .pic-wrap {
-    width: 230px;
-    height: 176px;
+    width: $card-width;
+    height: $card-img-height;
     background-color: $img-color;
     overflow: hidden;
     img {
       width: 100%;
       height: auto;
-      min-height: 176px;
+      min-height: $card-img-height;
     }
   }
   h4 {

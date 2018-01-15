@@ -1,16 +1,18 @@
-mixin scroll(houseList, defaultImg, userType, houseType)
+mixin scroll(houseList, defaultImg, userType, houseType, userId)
   if houseList.length != 0
     .mui-scroll-wrapper
       div(class="mui-scroll" style={width: communityAround.length * 27.6 + 'rem'})
         each houseInfo in houseList
           div(class="mui-card line-item")
-            a(class="block-like link-a" href='/house/getHouseDetail?houseId=' + houseInfo.id + '&userType=' + userType + '&houseType=' + houseType)
+            a(class="block-like link-a" href='/house/houseDetail?houseId=' + houseInfo.id + '&userType=' + userType + '&houseType=' + houseType + '&userId=' + userId)
               .mui-card-content
                 .pic-wrap
-                  if houseInfo.surface_img != ''
-                    img(src=houseInfo.surface_img)
+                  if houseInfo.pic != ''
+                    img(src=houseInfo.pic)
                   else
                     img(src=defaultImg)
-                h4=houseInfo.cmt_name + ' ' + houseInfo.build_date + '年建'
+                h4=houseInfo.room + houseInfo.hall + '|' + houseInfo.buildarea + '|朝' + houseInfo.forward
                 .text-wrap
-                  span.red-text=houseInfo.averprice + (houseType=='1'?'元/平':'元/月')
+                  span.red-text=houseInfo.price
+                  if houseType == '1'
+                    span.grey-text=houseInfo.avgprice

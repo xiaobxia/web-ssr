@@ -6,18 +6,20 @@ const express = require('express');
 const compression = require('compression');
 const microcache = require('route-cache');
 const path = require('path');
+const bluebird = require('bluebird');
 const favicon = require('serve-favicon');
 const proxyMiddleware = require('http-proxy-middleware');
 const sysRoutes = require('./routes');
 const config = require('../config/index');
-const log = require('./logger');
+const log = require('./common/logger');
 
+global.Promise = bluebird;
 const serverInfo = `express/${require('express/package.json').version} `;
 const env = process.env.NODE_ENV;
 const isDev = env === 'dev';
 // const useMicroCache = process.env.MICRO_CACHE !== 'false';
 
-const baseDir =config[env].server.baseDir;
+const baseDir = config[env].server.baseDir;
 const port = config[env].server.port || 4000;
 const assetsSubDirectory = config[env].assetsSubDirectory || '';
 const join = file => path.join(baseDir, file);
@@ -31,11 +33,11 @@ const serve = (path, cache) => express.static(join(path), {
 });
 
 const proxyTable = config[env].server.proxyTable;
-if(proxyTable) {
+if (proxyTable) {
   Object.keys(proxyTable).forEach(function (context) {
     let options = proxyTable[context];
     if (typeof options === 'string') {
-      options = { target: options }
+      options = {target: options}
     }
     app.use(proxyMiddleware(options.filter || context, options))
   })
@@ -51,7 +53,7 @@ app.use(assetsSubDirectory, serve(assetsSubDirectory, true));
 // }));
 
 // 因为只做view层所以统一处理
-app.use((req, res, next)=>{
+app.use((req, res, next) => {
   req.requestStartTime = Date.now();
   res.setHeader("Content-Type", "text/html");
   res.setHeader("Server", serverInfo);
@@ -60,18 +62,19 @@ app.use((req, res, next)=>{
 
 app.use(sysRoutes);
 
-
-app.use((req, res)=>{
+app.use((req, res) => {
   res.status(404).send('404');
+  log.warn(`请求404 : ${req.url}`);
 });
 
 // 因为只做view层所以统一处理
-app.use((err, req, res, next)=>{
+// 错误函数必须有next
+app.use((err, req, res, next) => {
   res.status(500).send('500 | Internal Server Error');
   console.error(`渲染发生错误 : ${req.url}`);
   log.error(err);
-  next();
 });
+
 
 app.listen(port, () => {
   console.log(`server started at localhost:${port}`);

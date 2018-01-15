@@ -8,7 +8,7 @@
     "dev": "cross-env MICRO_CACHE=false NODE_ENV=dev nodemon --inspect ./app/server.js",
     "dev:gulp": "gulp",
     "build": "gulp --gulpfile ./gulpfile.production.js",
-    "start": "cross-env NODE_ENV=prod pm2 start ./app/server.js"
+    "start": "cross-env NODE_ENV=prod npm run build && pm2 start ./app/server.js --name=web-ssr"
   },
   "repository": {
     "type": "git",
@@ -47,6 +47,7 @@
     "gulp-uglify": "^3.0.0",
     "http-proxy-middleware": "^0.17.4",
     "log4js": "^2.4.1",
+    "lru-cache": "^4.1.1",
     "merge": "^1.2.0",
     "nodemon": "^1.14.7",
     "pm2": "^2.9.1",

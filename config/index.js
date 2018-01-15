@@ -41,6 +41,7 @@ module.exports = {
     }
   },
   dev: {
+    useRedis: false,
     assetsSubDirectory: '/static',
     server: {
       port: 4000,
@@ -54,6 +55,7 @@ module.exports = {
     phpAddress: 'http://apidev.cd121.com/index',
   },
   prod: {
+    useRedis: false,
     assetsSubDirectory: '/static',
     assetsPublicPath: '',
     server: {

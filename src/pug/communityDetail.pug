@@ -1,6 +1,7 @@
 include components/carousel
 include components/houseList
 include components/scroll
+include components/scroll-community
 
 doctype html
 html(lang="en")
@@ -39,27 +40,25 @@ html(lang="en")
       .item-wrap
         span.item-title 栋数：
         span.item-value=build_num + '栋'
-    #house-baidu-map
+    a(class="block-like link-a" href="http://api.map.baidu.com/marker?location=" + b_map_y + "," + b_map_x + "&title=小区位置&content=" + cmt_name + "&output=html")
+      #house-baidu-map
     .content-wrap.tab-wrap
       h2 同小区房源
       #segmentedControl.mui-segmented-control
         a.mui-control-item.mui-active(href="#sale") 在售
-        if houseInblock.rent.lists.length != 0
-          a(class="mui-control-item" href="#rent") 在租
-        else
-          a(class="mui-control-item-no" href="#rent") 在租
+        a(class="mui-control-item" href="#rent") 在租
     .content-wrap-h
       #sale.mui-control-content.mui-active
-        +houseList(houseInblock.sell.lists, '/static/asset/default-house-img.jpg', userType, '1')
+        +houseList(houseInblock.sell.lists, '/static/asset/default-house-img.jpg', userType, '1', userId)
         .more-btn 查看更多
       #rent.mui-control-content
-        +houseList(houseInblock.rent.lists, '/static/asset/default-house-img.jpg', userType, '2')
+        +houseList(houseInblock.rent.lists, '/static/asset/default-house-img.jpg', userType, '2', userId)
         .more-btn 查看更多
     if communityAround.length != 0
       .content-wrap.tab-wrap
         h2.content-title 周边小区
       .content-wrap-left
-        +scroll(communityAround, "/static/asset/default-house-img.jpg" , userType, houseType)
+        +scroll-community(communityAround, "/static/asset/default-house-img.jpg" , userType, houseType, userId)
     div(style="height: 5rem")
     div(style={display: 'none'})
     script(type="text/javascript").

@@ -1,6 +1,6 @@
 const log4js = require('log4js');
 const path = require('path');
-const config = require('../config/index');
+const config = require('../../config/index');
 
 const loggerConfig = config.logger;
 const env = process.env.NODE_ENV;

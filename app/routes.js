@@ -5,13 +5,10 @@ const express = require('express');
 const merge = require('merge');
 const pug = require('pug');
 const path = require('path');
-const fs = require('fs-extra');
-const redis = require("redis");
-const bluebird = require('bluebird');
-const request = require('./request');
-const log = require('./logger');
-const Parameter = require('./validate');
+const log = require('./common/logger');
+const Parameter = require('./common/validate');
 const config = require('../config/index');
+const getAsyncData = require('./getAsyncData');
 
 const p = new Parameter();
 let router = express.Router();
@@ -23,12 +20,6 @@ const pugOptions = {
   // debug: isDev,
   compileDebug: isDev
 };
-bluebird.promisifyAll(redis.RedisClient.prototype);
-const client = redis.createClient({
-  host: '39.108.114.91',
-  port: 6379
-});
-const cacheMaxAge = 2;
 
 function validateData(rule, data) {
   let fake = {};
@@ -49,21 +40,8 @@ function validateData(rule, data) {
   }
 }
 
-function logData(fileData) {
-  if (isDev) {
-    const fileName = './mock/last.json';
-    fs.ensureFile(fileName).then(() => {
-      fs.writeJson(fileName, fileData, {spaces: 2})
-    });
-  }
-}
-
 function getViewFile(fileName) {
   return path.resolve(baseDir, fileName);
-}
-
-function consolePhpTime(req) {
-  log.info(`PHP用时: ${Date.now() - req.requestStartTime}ms`);
 }
 
 function consoleRenderTime(fn) {
@@ -73,6 +51,9 @@ function consoleRenderTime(fn) {
   return result;
 }
 
+function consoleRequestTime(req) {
+  log.info(`请求"${req.originalUrl}"的累计用时: ${Date.now() - req.requestStartTime}ms`);
+}
 /**
  * 路由部分
  */
@@ -85,12 +66,12 @@ router.get('/', async (req, res, next) => {
   } catch (err) {
     next(err);
   } finally {
-    log.info(`请求"${req.originalUrl}"的累计用时: ${Date.now() - req.requestStartTime}ms`);
+    consoleRequestTime(req);
   }
 });
 
-router.get('/houseDetail', async (req, res, next) => {
-  log.trace('请求进入: /houseDetail');
+router.get('/house/houseDetail', async (req, res, next) => {
+  log.trace('请求进入: /house/houseDetail');
   try {
     const query = validateData({
       houseId: {required: true},
@@ -112,18 +93,7 @@ router.get('/houseDetail', async (req, res, next) => {
         houseId: query.houseId
       };
     }
-    const cacheKey = apiUrl + JSON.stringify(apiQuery);
-    let cacheData = await client.getAsync(cacheKey);
-    let data = null;
-    if (cacheData) {
-      log.info('命中缓存');
-      data = JSON.parse(cacheData);
-    } else {
-      data = await request.post(apiUrl, apiQuery);
-      consolePhpTime(req);
-      client.setex(cacheKey, cacheMaxAge, JSON.stringify(data), redis.print);
-    }
-    logData(data);
+    let data = await getAsyncData(req, 'post', apiUrl, apiQuery);
     data.houseType = query.houseType;
     data.userType = query.userType;
     data.userId = query.userId;
@@ -138,12 +108,12 @@ router.get('/houseDetail', async (req, res, next) => {
   } catch (err) {
     next(err);
   } finally {
-    log.info(`请求"${req.originalUrl}"的累计用时: ${Date.now() - req.requestStartTime}ms`);
+    consoleRequestTime(req);
   }
 });
 
-router.get('/communityDetail', async (req, res, next) => {
-  log.trace('请求进入: /communityDetail');
+router.get('/house/communityDetail', async (req, res, next) => {
+  log.trace('请求进入: /house/communityDetail');
   try {
     const query = validateData({
       blockId: {required: true},
@@ -156,18 +126,7 @@ router.get('/communityDetail', async (req, res, next) => {
       blockId: query.blockId,
       houseType: query.houseType
     };
-    const cacheKey = apiUrl + JSON.stringify(apiQuery);
-    let cacheData = await client.getAsync(cacheKey);
-    let data = null;
-    if (cacheData) {
-      log.info('命中缓存');
-      data = JSON.parse(cacheData);
-    } else {
-      data = await request.post(apiUrl, apiQuery);
-      consolePhpTime(req);
-      client.setex(cacheKey, cacheMaxAge, JSON.stringify(data), redis.print);
-    }
-    logData(data);
+    let data = await getAsyncData(req, 'post', apiUrl, apiQuery);
     if (data.address.length > 10) {
       data.address = data.address.substring(0, 10) + '...';
     }
@@ -182,7 +141,7 @@ router.get('/communityDetail', async (req, res, next) => {
   } catch (err) {
     next(err);
   } finally {
-    log.info(`请求"${req.originalUrl}"的累计用时: ${Date.now() - req.requestStartTime}ms`);
+    consoleRequestTime(req);
   }
 });
 
