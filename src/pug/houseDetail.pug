@@ -15,6 +15,10 @@ html(lang="en")
     script(type="text/javascript", src="/static/lib/util.js")
     script(type="text/javascript").
       setAdaptive();
+    if isDev == true
+      script(type="text/javascript", src="/static/lib/vconsole.min.js")
+      script(type="text/javascript").
+        var vConsole = new VConsole();
   body
     +carousel('slider', 'slider-number-index', img, '/static/asset/default-house-img.jpg')
     .content-wrap.houseMainInfo-wrap
